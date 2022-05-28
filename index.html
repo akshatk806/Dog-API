@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Show Result after hitting API</title>
+</head>
+<body>
+    <button id="fetch-dog-image-button" class="text-white bg-blue-700 m-10 px-4 py-1 rounded-md hover:bg-blue-600">
+        Fetch
+    </button>   
+    <div id="dog-image-container" class="m-4">
+        <img id="dog-image">
+    </div>
+
+    <script src="jquery-3.6.0.js"></script>
+    <script> 
+        function fetchRandomDogImage(){
+            var xhrRequest=new XMLHttpRequest();   // First step is making a request , xhrRequest is a object
+            xhrRequest.onload=function(){                // This is handler, onload is a function that will be call once the request is recieve
+                console.log(xhrRequest.response);  // Printing the JSON on console(becaue we get the response in JSON)
+                let responseJSON=JSON.parse(xhrRequest.response);   // convert string to JSONobject
+                // JSON.stringify()    -> convert JSONobject to string
+                let imageURL=responseJSON.message;    // Extract information from response, message has the image link(image link and API is different thing)
+                $("#dog-image").attr('src',imageURL);  // Set that image link(link HTML tag has attributes, <img src="">)
+            };
+            xhrRequest.open("get","https://dog.ceo/api/breeds/image/random",true);   // open->Initilize the request or open the request for you | open(method,link you want to hit),true-Asynchronous and false->synchronous)
+            xhrRequest.send();                                                       // Make the request to the server
+        }
+        $("#fetch-dog-image-button").click(fetchRandomDogImage);   // Handling the click
+    </script>
+</body>
+</html>
